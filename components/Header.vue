@@ -1,15 +1,18 @@
 <script>
 import Cookies from 'js-cookie';
 import { useUserStore } from '~/stores/user';
+import { useCategoriesStore } from '~/stores/lots'
 // import jwt from 'jsonwebtoken'
 
 export default {
     data() {
         return {
             showSupport: false,
+            showBurgerSupport: false,
             showBurger: false,
             searchInput: "",
             burger: document.querySelector("#burger"),
+            gamesCount: 0,
 
             modal: false,
             logged: false,
@@ -17,8 +20,10 @@ export default {
     },
     async mounted() {
         await useUserStore().getUser()
+        await useCategoriesStore().getCategories();
         this.modal = useUserStore().expired;
         this.logged = useUserStore().logged;
+        this.gamesCount = useCategoriesStore().categories.length 
     }
 }
 
@@ -26,7 +31,7 @@ export default {
 
 
 <template>
-    <BModal v-if="modal" v-model="modal" centered title="401 Error:" :okOnly="true" :lazy="true"> You are no longer authorized and need to authenticate again. </BModal>
+    <BModal v-if="modal" v-model="modal" centered title="Authentication Error" :okOnly="true" :lazy="true"> You are no longer authorized and need to authenticate again. </BModal>
 
     <header class="header">
         <div class="container">
@@ -39,7 +44,7 @@ export default {
                             </NuxtLink>
                         </BNavbarBrand>
                         <BNavForm class="d-flex align-items-center h-100">
-                            <BFormInput class="border-0 d-flex align-items-center h-100 outline-none mt-1" style="font-size: 16px; outline: none; box-shadow: none;" v-model="searchInput" placeholder="Search by 0 games" />
+                            <BFormInput class="border-0 d-flex align-items-center h-100 outline-none mt-1" style="font-size: 16px; outline: none; box-shadow: none;" v-model="searchInput" :placeholder="'Search by ' + gamesCount + ' games'" />
                             <button class="border-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
                                     <path fill="none" stroke="#919191" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0-14 0m18 11l-6-6" />
@@ -150,7 +155,7 @@ export default {
                                         <li class="d-flex w-100">
                                             <NuxtLink class="h-100 w-100 d-flex px-3">
                                                 <div class="dropdown ms-4">
-                                    <a class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="true">
                                         Support
                                     </a>
                                     <ul class="dropdown-menu mt-4">

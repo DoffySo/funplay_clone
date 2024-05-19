@@ -1,16 +1,44 @@
 @font-face {
-    font-family: 'Graphik';
-    src: url('./GraphikThin.otf') format('opentype');
-    font-weight: 100;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Graphik';
-    src: url('./GraphikThinItalic.otf') format('opentype');
-    font-weight: 100;
-    font-style: italic;
-  }
+  font-family: 'Graphik';
+  src: url('./GraphikThin.otf') format('opentype');
+  font-weight: thin;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Graphik';
+  src: url('./GraphikThinItalic.otf') format('opentype');
+  font-weight: thin;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Graphik';
+  src: url('./GraphikLight.otf') format('opentype');
+  font-weight: light;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Graphik';
+  src: url('./GraphikLightItalic.otf') format('opentype');
+  font-weight: light;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Graphik';
+  src: url('./GraphikExtralight.otf') format('opentype');
+  font-weight: lighter;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Graphik';
+  src: url('./GraphikExtralightItalic.otf') format('opentype');
+  font-weight: lighter;
+  font-style: italic;
+}
 
 @font-face {
     font-family: 'Graphik';
@@ -23,6 +51,20 @@
     font-family: 'Graphik';
     src: url('./GraphikRegularItalic.otf') format('opentype');
     font-weight: normal;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Graphik';
+    src: url('./GraphikSemibold.otf') format('opentype');
+    font-weight: semibold;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Graphik';
+    src: url('./GraphikSemiboldItalic.otf') format('opentype');
+    font-weight: semibold;
     font-style: italic;
   }
   

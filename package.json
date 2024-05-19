@@ -20,7 +20,8 @@
     "pinia": "^2.1.7",
     "sass": "^1.77.2",
     "vue": "^3.4.27",
-    "vue-router": "^4.3.2"
+    "vue-router": "^4.3.2",
+    "vue-scrollactive": "^0.9.3"
   },
   "devDependencies": {
     "@bootstrap-vue-next/nuxt": "^0.17.6",

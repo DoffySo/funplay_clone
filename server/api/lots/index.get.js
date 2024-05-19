@@ -6,7 +6,8 @@ export default defineEventHandler(async () => {
         return lots.map(lot => ({
             lotname: lot.lotname,
             chips: lot.chips,
-            servers: lot.servers
+            servers: lot.servers,
+            image: lot.image
         }))
     } catch(e) {
 

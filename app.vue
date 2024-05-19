@@ -1,20 +1,18 @@
 <script>
 import Cookies from 'js-cookie';
 import { useUserStore } from './stores/user';
+import { useCategoriesStore } from './stores/lots';
 
 export default {
   data() {
     return {
-      modal: true,
     }
   },
   methods: {
-    handleModal() {
-      console.log("CLICKED OK!!")
-    }
   },
   async mounted() {
     useUserStore()
+    useCategoriesStore()
   }
 }
 </script>
