@@ -72,25 +72,7 @@ async function login(body) {
     }
 }
 
-
-async function getjwtdata(token) {
-    try {
-        const token = Cookies.get("token");
-
-        const user = jwt.verify(token, process.env.jwttoken);
-
-        return {
-            _id: user._id,
-            uid: user.uid
-        }
-    } catch(e) {
-        console.error(e)
-        return "err: "+e;
-    }
-}
-
 export {
     register,
     login,
-    getjwtdata
 }
