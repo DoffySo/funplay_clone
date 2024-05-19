@@ -1,25 +1,27 @@
 <script>
 import Cookies from 'js-cookie';
+import { useUserStore } from './stores/user';
 
 export default {
+  data() {
+    return {
+      modal: true,
+    }
+  },
+  methods: {
+    handleModal() {
+      console.log("CLICKED OK!!")
+    }
+  },
   async mounted() {
-    console.log(21);
-    useUserStore().getUser()
-
-    const test = await $fetch('/api/account/token', {
-      method: "post",
-      body: {
-        token: Cookies.get("token")
-      }
-    })
-    console.log(test);
+    useUserStore()
   }
 }
 </script>
 
 
 <template>
-  <div class="wrapper">
+<div class="wrapper">
     <div class="wrapper-content">
       <Header />
       <NuxtPage />

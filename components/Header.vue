@@ -1,5 +1,6 @@
 <script>
 import Cookies from 'js-cookie';
+import { useUserStore } from '~/stores/user';
 // import jwt from 'jsonwebtoken'
 
 export default {
@@ -8,9 +9,16 @@ export default {
             showSupport: false,
             showBurger: false,
             searchInput: "",
+            burger: document.querySelector("#burger"),
+
+            modal: false,
             logged: false,
-            burger: document.querySelector("#burger")
         }
+    },
+    async mounted() {
+        await useUserStore().getUser()
+        this.modal = useUserStore().expired;
+        this.logged = useUserStore().logged;
     }
 }
 
@@ -18,13 +26,15 @@ export default {
 
 
 <template>
+    <BModal v-if="modal" v-model="modal" centered title="401 Error:" :okOnly="true" :lazy="true"> You are no longer authorized and need to authenticate again. </BModal>
+
     <header class="header">
         <div class="container">
             <BNavbar style="border-bottom: 1px solid #e4e4e4;" class="text-secondary">
                 <div class="container-fluid d-flex align-items-center">
                     <div class="navbar-header d-flex align-items-center" style="width: 260px;">
                         <BNavbarBrand class="h-100 d-flex">
-                            <NuxtLink>
+                            <NuxtLink to="/" :external="true">
                                 <img src="/public/logo-funpay.svg" alt="FunPay" style="width: 59px!important; height: 22px!important;">
                             </NuxtLink>
                         </BNavbarBrand>

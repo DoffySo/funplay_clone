@@ -1,5 +1,6 @@
 <script>
 import Cookies from 'js-cookie';
+import { useUserStore } from '~/stores/user';
 
 export default {
     data() {
@@ -27,11 +28,15 @@ export default {
                         expires: 1,
                     })
 
-                    // await navigateTo("/")
+                    await navigateTo("/", {external: true})
                 }
 
-                console.log(result);
+                // console.log(result);
         }
+    },
+    async mounted() {
+        if (useUserStore().logged)
+            await navigateTo("/")
     }
 }
 </script>

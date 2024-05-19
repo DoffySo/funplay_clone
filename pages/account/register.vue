@@ -1,4 +1,7 @@
 <script>
+import Cookies from 'js-cookie';
+import { useUserStore } from '~/stores/user';
+
 export default {
     data() {
         return {
@@ -23,11 +26,13 @@ export default {
                         password: this.password
                     }
                 })
-
-                console.log(result);
             }
         }
-    }
+    },
+    async mounted() {
+        if (useUserStore().logged)
+            await navigateTo("/")
+    },
 }
 </script>
 

@@ -10,7 +10,7 @@ const generatejwt = (_id, uid) => {
     };
 
     return jwt.sign(payload, process.env.jwttoken, {
-        expiresIn: '24h',
+        expiresIn: '1m',
     })
 }
 
