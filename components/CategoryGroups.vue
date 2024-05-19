@@ -36,11 +36,11 @@ export default {
             this.categoryLetters = arr;
             this.groupedCategories = sortedCategories;
 
-            console.log(alphabetical, "!!!");
-            console.log(numeric, "!!!!");
-            console.log(sortedCategories, "sortedCategories");
-            console.log(arr, "arr");
-            console.log(sortedCategories, "sortedCategories2");
+            // console.log(alphabetical, "!!!");
+            // console.log(numeric, "!!!!");
+            // console.log(sortedCategories, "sortedCategories");
+            // console.log(arr, "arr");
+            // console.log(sortedCategories, "sortedCategories2");
         }
     },
     async mounted() {
@@ -56,16 +56,15 @@ export default {
 
 <template>
     <div class="promo-game-list-header">
-        <ul class="list-unstyled d-flex flex-column" id="letters" data-bs-spy="scroll" data-bs-target="#letters" data-bs-offset="0" data-bs-smooth-scroll="true" tabindex="0">
+        <ul class="list-unstyled d-flex flex-column">
             <li v-for="letter in categoryLetters" :key="letter" class="d-flex align-items-start" :id="'letter' + letter">
                 <a style="font-family: sans-serif!important; font-size: 11px; font-weight: 600;" class="navlink link-primary mb-1" :href="'#letter' + letter">{{ letter }}</a>
-                <!-- <scrollactive-item :href="'#letter' + letter">{{ letter }}</scrollactive-item> -->
             </li>
         </ul>
     </div>
     <div class="promo-game-list w-100">
         <template v-for="letter in categoryLetters" :key="letter">
-            <div class="promo-game-list-title text-secondary fw-normal mb-3" style="font-family: sans-serif!important; font-size: 10px;" :id="'letters letter' + letter">{{ letter }}</div>
+            <div class="promo-game-list-title text-secondary fw-normal mb-3" style="font-family: sans-serif!important; font-size: 10px;" :id="'letter' + letter">{{ letter }}</div>
             <div class="row row-10 flex">
                 <template v-for="category in groupedCategories" :key="category._id">
                     <template v-if="category.lotname.charAt(0).toUpperCase() === letter">
