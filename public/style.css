@@ -1,0 +1,56 @@
+@import url('./fonts/graphik.css');
+/* @import url('./fonts/helveticaneue.css'); */
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Helvetica Neue', 'Graphik', sans-serif!important;
+    font-weight: normal;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+a:hover {
+    cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+    .container {
+        width: 750px;
+    }
+}
+@media screen and (min-width: 992px) {
+    .container {
+        width: 970px;
+    }
+}
+@media screen and (min-width: 1200px) {
+    .container {
+        width: 1155px;
+    }
+}
+
+
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.header {
+    height: 64px;
+}
+
+.header .container {
+    height: 100%;
+}
+
+.navbar {
+    height: 100%;
+}
