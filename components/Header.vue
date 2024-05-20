@@ -44,8 +44,8 @@ export default {
                             </NuxtLink>
                         </BNavbarBrand>
                         <BNavForm class="d-flex align-items-center h-100">
-                            <BFormInput class="border-0 d-flex align-items-center h-100 outline-none mt-1" style="font-size: 16px; outline: none; box-shadow: none;" v-model="searchInput" :placeholder="'Search by ' + gamesCount + ' games'" />
-                            <button class="border-0">
+                            <BFormInput class="border-0 d-flex align-items-center h-100 outline-none mt-1 bg-transparent" style="font-size: 16px; outline: none; box-shadow: none;" v-model="searchInput" :placeholder="'Search by ' + gamesCount + ' games'" />
+                            <button class="border-0 bg-transparent">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
                                     <path fill="none" stroke="#919191" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0-14 0m18 11l-6-6" />
                                 </svg>
@@ -54,7 +54,7 @@ export default {
                     </div>
                     <BNav>
                         <BNavText>
-                            <div class="dropdown ms-4">
+                            <div class="dropdown ms-4 d-none d-sm-block">
                                 <a class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Support
                                 </a>

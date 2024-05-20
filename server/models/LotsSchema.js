@@ -8,7 +8,9 @@ const autoIncrement = AutoIncrementFactory(connection)
 const chipsSchema = new Schema({
     chipsid: {type: Number, unique: true},
     server: {type: String},
-    name: {type: String, required: true}
+    name: {type: String, required: true},
+    description: {type: String, required: true},
+    platforms: [String]
 })
 chipsSchema.plugin(autoIncrement, {inc_field: 'chipsid'})
 
@@ -68,6 +70,10 @@ const Offer = new Schema({
     showinlist: {type: Boolean, default: true},
     automatic: {type: Boolean, default: false},
     deliveryitems: [offeritemsSchema],
+    shortDescription: {type: String},
+    longDescription: {type: String},
+    server: {type: String},
+    price: {type: Number}
 })
 Offer.plugin(autoIncrement, {inc_field: 'offerid'})
 

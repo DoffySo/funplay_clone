@@ -56,7 +56,7 @@ export default {
 
 <template>
     <div class="promo-game-list-header">
-        <ul class="list-unstyled d-flex flex-column">
+        <ul class="list-unstyled d-flex flex-column sticky-top">
             <li v-for="letter in categoryLetters" :key="letter" class="d-flex align-items-start" :id="'letter' + letter">
                 <a style="font-family: sans-serif!important; font-size: 11px; font-weight: 600;" class="navlink link-primary mb-1" :href="'#letter' + letter">{{ letter }}</a>
             </li>
