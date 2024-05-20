@@ -8,6 +8,7 @@ const autoIncrement = AutoIncrementFactory(connection)
 const chipsSchema = new Schema({
     chipsid: {type: Number, unique: true},
     server: {type: String},
+    region: {type: String},
     name: {type: String, required: true},
     description: {type: String, required: true},
     platforms: [String]
@@ -17,7 +18,7 @@ chipsSchema.plugin(autoIncrement, {inc_field: 'chipsid'})
 const Lot = new Schema({
     lotname: {type: String},
     chips: [chipsSchema],
-    servers: {type: Boolean, default: false},
+    regions: {type: Boolean, default: false},
     image: {type: String}
 })
 

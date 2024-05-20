@@ -31,30 +31,28 @@ export default {
             })
         },
         getFilteredSortedOffers() {
-            let filteredOffers = this.offers;
+                let filteredOffers = this.offers;
 
-            // Фильтрация по платформе
-            if (this.selectedPlatform !== 'all') {
-                filteredOffers = filteredOffers.filter(offer => offer.platform === this.selectedPlatform);
-            }
-
-            // Фильтрация по автоматической доставке
-            if (this.automaticDelivery) {
-                filteredOffers = filteredOffers.filter(offer => offer.automatic);
-            }
-
-            // Сортировка предложений
-            if (this.sortby === 'price') {
-                filteredOffers = filteredOffers.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-                if (!this.asc) {
-                    filteredOffers = filteredOffers.reverse();
+                if (this.platform !== null) {
+                    filteredOffers = filteredOffers.filter(offer => offer.server === this.platform);
                 }
-            } else if (this.sortby === 'default') {
-                filteredOffers = filteredOffers.reverse();
+                if (this.automaticDelivery) {
+                    filteredOffers = filteredOffers.filter(offer => offer.automatic);
+                }
+
+                if (this.sortby === 'price') {
+                    filteredOffers.sort((a, b) => {
+                        if (this.asc) {
+                            return parseFloat(a.price) - parseFloat(b.price);
+                        } else {
+                            return parseFloat(b.price) - parseFloat(a.price);
+                        }
+                    });
+                }
+
+                return filteredOffers;
             }
 
-            return filteredOffers;
-        }
     },
 }
 </script>
@@ -215,288 +213,51 @@ export default {
                                         </tr>
                                     </thead>
                                     <template v-if="this.offers.length > 0">
-                                        <template v-if="this.sortby == 'default'">
-                                            <template v-if="this.automaticDelivery == false">
-                                                <tbody>
-                                                <tr class="offer border-bottom" @click="gotoffer(offer.offerid)" href="/offer/1" v-for="offer in this.offers.slice().reverse()" :key="offer.offerid">
-                                                    <td class="d-none d-sm-table-cell" scope="row" rowspan="1">
-                                                        {{ offer.server }}
-                                                    </td>
-                                                    <td class="fw-normal d-flex flex-column">
-                                                        <div class="text-secondary fs-6 d-flex d-sm-none fw-bold">{{ offer.server }}</div>
-                                                        <div class="fs-6 fs-md-2">{{ offer.shortDescription }}</div>
-                                                    </td>
-                                                    <td class="d-flex d-sm-table-cell">
-                                                        <div class="media d-flex align-items-center gap-2">
-                                                            <div class="media-left">
-                                                                <div class="avatar rounded-circle overflow-hidden" style="width: 36px; height: 36px; background-size: contain;" :style="'background-image: url(/avatars/'+users.filter(x => x.uid == offer.owner)[0].avatarName+')'">
-                                                                </div>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <div class="media-user-name link-dark fw-bold text-start">
-                                                                    {{ users.filter(x => x.uid == offer.owner)[0].username }}
-                                                                </div>
-                                                                <div class="media-user-info text-secondary fw-bold text-nowrap" style="font-size: 14px; font-family: sans-serif!important;">
-                                                                    {{ timeagolib.format(users.filter(x => x.uid == offer.owner)[0].registerDate) }}
-                                                                </div>
+                                        <tbody>
+                                            <tr class="offer" @click="gotoffer(offer.offerid)" v-for="offer in getFilteredSortedOffers()" :key="offer.price">
+                                                <td class="d-none d-sm-table-cell" scope="row" rowspan="1">
+                                                {{ offer.server }}
+                                                </td>
+                                                <td class="fw-normal d-flex flex-column">
+                                                    <div class="text-secondary fs-6 d-flex d-sm-none fw-bold">{{ offer.server }}</div>
+                                                    <div class="fs-6 fs-md-2">{{ offer.shortDescription }}</div>
+                                                </td>
+                                                <td class="d-flex d-sm-table-cell">
+                                                    <div class="media d-flex align-items-center gap-2">
+                                                        <div class="media-left">
+                                                            <div class="avatar rounded-circle overflow-hidden" style="width: 36px; height: 36px; background-size: contain;" :style="'background-image: url(/avatars/'+users.filter(x => x.uid == offer.owner)[0].avatarName+')'">
                                                             </div>
                                                         </div>
-                                                    </td>
-                                                    <td class="text-end fw-bold">
-                                                        <template v-if="!offer.automatic">
-                                                            {{ offer.price }}$
-                                                        </template>
-                                                        <template v-else>
-                                                            <div class="media">
-                                                                <div class="media-left fw-bold">
-                                                                    {{ offer.price }}$
-                                                                </div>
-                                                            <div class="media-body d-flex">
-                                                                <svg class="d-flex ms-auto fs-bold" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-                                                                    <path fill="none" stroke="#4384d0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 19.364a9 9 0 1 1 12.728 0M16 9l-4 4" />
-                                                                </svg>
+                                                        <div class="media-body">
+                                                            <div class="media-user-name link-dark fw-bold text-start">
+                                                                {{ users.filter(x => x.uid == offer.owner)[0].username }}
+                                                            </div>
+                                                            <div class="media-user-info text-secondary fw-bold text-nowrap" style="font-size: 14px; font-family: sans-serif!important;">
+                                                                {{ timeagolib.format(users.filter(x => x.uid == offer.owner)[0].registerDate) }}
                                                             </div>
                                                         </div>
-                                                        </template>
-                                                        
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </template>
-                                            <template v-if="this.automaticDelivery == true">
-                                                <tbody>
-                                                <tr class="offer" @click="gotoffer(offer.offerid)" href="/offer/1" v-for="offer in this.offers.slice().reverse().filter(x=>x.automatic == true)" :key="offer.offerid">
-                                                    <td class="d-none d-sm-table-cell" scope="row" rowspan="1">
-                                                        {{ offer.server }}
-                                                    </td>
-                                                    <td class="fw-normal d-flex flex-column">
-                                                        <div class="text-secondary fs-6 d-flex d-sm-none fw-bold">{{ offer.server }}</div>
-                                                        <div class="fs-6 fs-md-2">{{ offer.shortDescription }}</div>
-                                                    </td>
-                                                    <td class="d-flex d-sm-table-cell">
-                                                        <div class="media d-flex align-items-center gap-2">
-                                                            <div class="media-left">
-                                                                <div class="avatar rounded-circle overflow-hidden" style="width: 36px; height: 36px; background-size: contain;" :style="'background-image: url(/avatars/'+users.filter(x => x.uid == offer.owner)[0].avatarName+')'">
-                                                                </div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-end fw-bold">
+                                                    <template v-if="!offer.automatic">
+                                                        {{ offer.price }}$
+                                                    </template>
+                                                    <template v-else>
+                                                        <div class="media">
+                                                            <div class="media-left fw-bold">
+                                                                {{ offer.price }}$
                                                             </div>
-                                                            <div class="media-body">
-                                                                <div class="media-user-name link-dark fw-bold text-start">
-                                                                    {{ users.filter(x => x.uid == offer.owner)[0].username }}
-                                                                </div>
-                                                                <div class="media-user-info text-secondary fw-bold text-nowrap" style="font-size: 14px; font-family: sans-serif!important;">
-                                                                    {{ timeagolib.format(users.filter(x => x.uid == offer.owner)[0].registerDate) }}
-                                                                </div>
-                                                            </div>
+                                                        <div class="media-body d-flex">
+                                                            <svg class="d-flex ms-auto fs-bold" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                                                                <path fill="none" stroke="#4384d0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 19.364a9 9 0 1 1 12.728 0M16 9l-4 4" />
+                                                            </svg>
                                                         </div>
-                                                    </td>
-                                                    <td class="text-end fw-bold">
-                                                        <template v-if="!offer.automatic">
-                                                            {{ offer.price }}$
-                                                        </template>
-                                                        <template v-else>
-                                                            <div class="media">
-                                                                <div class="media-left fw-bold">
-                                                                    {{ offer.price }}$
-                                                                </div>
-                                                            <div class="media-body d-flex">
-                                                                <svg class="d-flex ms-auto fs-bold" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-                                                                    <path fill="none" stroke="#4384d0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 19.364a9 9 0 1 1 12.728 0M16 9l-4 4" />
-                                                                </svg>
-                                                            </div>
-                                                        </div>
-                                                        </template>
-                                                        
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </template>
-                                        </template>
-                                        <template v-if="this.sortby == 'price'">
-                                            <template v-if="this.automaticDelivery == false">
-                                                <tbody v-if="this.asc == false">
-                                                    <tr class="offer" @click="gotoffer(offer.offerid)" href="/offer/1" v-for="offer in this.offers.sort((a, b) => parseFloat(a.price) - parseFloat(b.price))" :key="offer.price">
-                                                        <td class="d-none d-sm-table-cell" scope="row" rowspan="1">
-                                                        {{ offer.server }}
-                                                        </td>
-                                                        <td class="fw-normal d-flex flex-column">
-                                                            <div class="text-secondary fs-6 d-flex d-sm-none fw-bold">{{ offer.server }}</div>
-                                                            <div class="fs-6 fs-md-2">{{ offer.shortDescription }}</div>
-                                                        </td>
-                                                        <td class="d-flex d-sm-table-cell">
-                                                            <div class="media d-flex align-items-center gap-2">
-                                                                <div class="media-left">
-                                                                    <div class="avatar rounded-circle overflow-hidden" style="width: 36px; height: 36px; background-size: contain;" :style="'background-image: url(/avatars/'+users.filter(x => x.uid == offer.owner)[0].avatarName+')'">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="media-body">
-                                                                    <div class="media-user-name link-dark fw-bold text-start">
-                                                                        {{ users.filter(x => x.uid == offer.owner)[0].username }}
-                                                                    </div>
-                                                                    <div class="media-user-info text-secondary fw-bold text-nowrap" style="font-size: 14px; font-family: sans-serif!important;">
-                                                                        {{ timeagolib.format(users.filter(x => x.uid == offer.owner)[0].registerDate) }}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-end fw-bold">
-                                                            <template v-if="!offer.automatic">
-                                                                {{ offer.price }}$
-                                                            </template>
-                                                            <template v-else>
-                                                                <div class="media">
-                                                                    <div class="media-left fw-bold">
-                                                                        {{ offer.price }}$
-                                                                    </div>
-                                                                <div class="media-body d-flex">
-                                                                    <svg class="d-flex ms-auto fs-bold" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-                                                                        <path fill="none" stroke="#4384d0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 19.364a9 9 0 1 1 12.728 0M16 9l-4 4" />
-                                                                    </svg>
-                                                                </div>
-                                                            </div>
-                                                            </template>
-                                                            
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                                <tbody v-if="this.asc == true">
-                                                    <tr class="offer" @click="gotoffer(offer.offerid)" href="/offer/1" v-for="offer in this.offers.sort((a, b) => parseFloat(b.price) - parseFloat(a.price))" :key="offer.price">
-                                                        <td class="d-none d-sm-table-cell" scope="row" rowspan="1">
-                                                        {{ offer.server }}
-                                                        </td>
-                                                        <td class="fw-normal d-flex flex-column">
-                                                            <div class="text-secondary fs-6 d-flex d-sm-none fw-bold">{{ offer.server }}</div>
-                                                            <div class="fs-6 fs-md-2">{{ offer.shortDescription }}</div>
-                                                        </td>
-                                                        <td class="d-flex d-sm-table-cell">
-                                                            <div class="media d-flex align-items-center gap-2">
-                                                                <div class="media-left">
-                                                                    <div class="avatar rounded-circle overflow-hidden" style="width: 36px; height: 36px; background-size: contain;" :style="'background-image: url(/avatars/'+users.filter(x => x.uid == offer.owner)[0].avatarName+')'">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="media-body">
-                                                                    <div class="media-user-name link-dark fw-bold text-start">
-                                                                        {{ users.filter(x => x.uid == offer.owner)[0].username }}
-                                                                    </div>
-                                                                    <div class="media-user-info text-secondary fw-bold text-nowrap" style="font-size: 14px; font-family: sans-serif!important;">
-                                                                        {{ timeagolib.format(users.filter(x => x.uid == offer.owner)[0].registerDate) }}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-end fw-bold">
-                                                            <template v-if="!offer.automatic">
-                                                                {{ offer.price }}$
-                                                            </template>
-                                                            <template v-else>
-                                                                <div class="media">
-                                                                    <div class="media-left fw-bold">
-                                                                        {{ offer.price }}$
-                                                                    </div>
-                                                                <div class="media-body d-flex">
-                                                                    <svg class="d-flex ms-auto fs-bold" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-                                                                        <path fill="none" stroke="#4384d0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 19.364a9 9 0 1 1 12.728 0M16 9l-4 4" />
-                                                                    </svg>
-                                                                </div>
-                                                            </div>
-                                                            </template>
-                                                            
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </template>
-                                            <template v-if="this.automaticDelivery == true">
-                                                <tbody v-if="this.asc == false">
-                                                    <tr class="offer" @click="gotoffer(offer.offerid)" href="/offer/1" v-for="offer in this.offers.sort((a, b) => parseFloat(a.price) - parseFloat(b.price)).filter(x => x.automatic == true)" :key="offer.price">
-                                                        <td class="d-none d-sm-table-cell" scope="row" rowspan="1">
-                                                        {{ offer.server }}
-                                                        </td>
-                                                        <td class="fw-normal d-flex flex-column">
-                                                            <div class="text-secondary fs-6 d-flex d-sm-none fw-bold">{{ offer.server }}</div>
-                                                            <div class="fs-6 fs-md-2">{{ offer.shortDescription }}</div>
-                                                        </td>
-                                                        <td class="d-flex d-sm-table-cell">
-                                                            <div class="media d-flex align-items-center gap-2">
-                                                                <div class="media-left">
-                                                                    <div class="avatar rounded-circle overflow-hidden" style="width: 36px; height: 36px; background-size: contain;" :style="'background-image: url(/avatars/'+users.filter(x => x.uid == offer.owner)[0].avatarName+')'">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="media-body">
-                                                                    <div class="media-user-name link-dark fw-bold text-start">
-                                                                        {{ users.filter(x => x.uid == offer.owner)[0].username }}
-                                                                    </div>
-                                                                    <div class="media-user-info text-secondary fw-bold text-nowrap" style="font-size: 14px; font-family: sans-serif!important;">
-                                                                        {{ timeagolib.format(users.filter(x => x.uid == offer.owner)[0].registerDate) }}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-end fw-bold">
-                                                            <template v-if="!offer.automatic">
-                                                                {{ offer.price }}$
-                                                            </template>
-                                                            <template v-else>
-                                                                <div class="media">
-                                                                    <div class="media-left fw-bold">
-                                                                        {{ offer.price }}$
-                                                                    </div>
-                                                                <div class="media-body d-flex">
-                                                                    <svg class="d-flex ms-auto fs-bold" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-                                                                        <path fill="none" stroke="#4384d0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 19.364a9 9 0 1 1 12.728 0M16 9l-4 4" />
-                                                                    </svg>
-                                                                </div>
-                                                            </div>
-                                                            </template>
-                                                            
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                                <tbody v-if="this.asc == true">
-                                                    <tr class="offer" @click="gotoffer(offer.offerid)" href="/offer/1" v-for="offer in this.offers.sort((a, b) => parseFloat(b.price) - parseFloat(a.price)).filter(x => x.automatic == true)" :key="offer.price">
-                                                        <td class="d-none d-sm-table-cell" scope="row" rowspan="1">
-                                                        {{ offer.server }}
-                                                        </td>
-                                                        <td class="fw-normal d-flex flex-column">
-                                                            <div class="text-secondary fs-6 d-flex d-sm-none fw-bold">{{ offer.server }}</div>
-                                                            <div class="fs-6 fs-md-2">{{ offer.shortDescription }}</div>
-                                                        </td>
-                                                        <td class="d-flex d-sm-table-cell">
-                                                            <div class="media d-flex align-items-center gap-2">
-                                                                <div class="media-left">
-                                                                    <div class="avatar rounded-circle overflow-hidden" style="width: 36px; height: 36px; background-size: contain;" :style="'background-image: url(/avatars/'+users.filter(x => x.uid == offer.owner)[0].avatarName+')'">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="media-body">
-                                                                    <div class="media-user-name link-dark fw-bold text-start">
-                                                                        {{ users.filter(x => x.uid == offer.owner)[0].username }}
-                                                                    </div>
-                                                                    <div class="media-user-info text-secondary fw-bold text-nowrap" style="font-size: 14px; font-family: sans-serif!important;">
-                                                                        {{ timeagolib.format(users.filter(x => x.uid == offer.owner)[0].registerDate) }}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-end fw-bold">
-                                                            <template v-if="!offer.automatic">
-                                                                {{ offer.price }}$
-                                                            </template>
-                                                            <template v-else>
-                                                                <div class="media">
-                                                                    <div class="media-left fw-bold">
-                                                                        {{ offer.price }}$
-                                                                    </div>
-                                                                <div class="media-body d-flex">
-                                                                    <svg class="d-flex ms-auto fs-bold" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-                                                                        <path fill="none" stroke="#4384d0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 19.364a9 9 0 1 1 12.728 0M16 9l-4 4" />
-                                                                    </svg>
-                                                                </div>
-                                                            </div>
-                                                            </template>
-                                                            
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </template>
-                                        </template>
+                                                    </div>
+                                                    </template>
+                                                    
+                                                </td>
+                                            </tr>
+                                        </tbody>
                                     </template>
                                     <template v-else>
                                         <div class="position-absolute start-50 translate-middle mt-4" style="top: 200%;">
