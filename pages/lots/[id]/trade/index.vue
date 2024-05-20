@@ -79,7 +79,7 @@
     position: absolute;
     z-index: -1;
     right: 45%;
-    margin-right: 352px;
+    margin-right: 350px;
     bottom: 100%;
     margin-bottom: -293px;
     border-radius: 500px;

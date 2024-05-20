@@ -18,7 +18,7 @@ chipsSchema.plugin(autoIncrement, {inc_field: 'chipsid'})
 const Lot = new Schema({
     lotname: {type: String},
     chips: [chipsSchema],
-    regions: {type: Boolean, default: false},
+    region: {type: Boolean, default: false},
     image: {type: String}
 })
 
@@ -74,7 +74,8 @@ const Offer = new Schema({
     shortDescription: {type: String},
     longDescription: {type: String},
     server: {type: String},
-    price: {type: Number}
+    price: {type: Number},
+    amount: {type: Number}
 })
 Offer.plugin(autoIncrement, {inc_field: 'offerid'})
 
