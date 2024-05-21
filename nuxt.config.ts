@@ -4,7 +4,8 @@ export default defineNuxtConfig({
     head: {
       script: [
         {
-          src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
+          src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js',
+          // link: [{ rel: 'icon', type: 'image/jpg', href: "/public/images/funpayicon.jpg" }]
         }
       ]
     }

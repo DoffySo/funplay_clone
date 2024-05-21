@@ -13,6 +13,14 @@ export default {
   async mounted() {
     useUserStore()
     useCategoriesStore()
+  },
+  setup() {
+    useSeoMeta({
+      title: 'FunPay — Marketplace for Gamers',
+      ogTitle: 'FunPay — Marketplace for Gamers',
+      description: 'On the secure FunPay marketplace, you can buy game currencies, accounts, items, skins and boosting services. Gamers can also place these for sale.',
+      ogDescription: 'On the secure FunPay marketplace, you can buy game currencies, accounts, items, skins and boosting services. Gamers can also place these for sale.',
+    })
   }
 }
 </script>

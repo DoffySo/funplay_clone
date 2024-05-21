@@ -38,3 +38,10 @@ a:hover {
 .navbar {
     height: 100%;
 }
+
+.chat-username {
+    &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}

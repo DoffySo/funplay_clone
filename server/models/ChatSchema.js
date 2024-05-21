@@ -15,14 +15,14 @@ const messageSchema = new Schema({
     senderuid: {type: Number},
     message: {type: String},
     attachments: [attachmentSchema],
+    date: {type: Number, default: Date.now()}
 });
 
 // Схема чатов
 const chatSchema = new Schema({
     chatid: {type: Number, unique: true, default: 0},
-    users: [Number], // список uid пользователей
-    messages: [messageSchema], // массив сообщений
-    date: {type: Number, default: Date.now()}
+    users: [Number], 
+    messages: [messageSchema],
 });
 
 try {

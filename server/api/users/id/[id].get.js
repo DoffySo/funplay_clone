@@ -6,6 +6,7 @@ export default defineEventHandler(async (event) => {
             uid: event.context.params.id
         }).exec()
         return users.map(users => ({
+            _id: users._id,
             uid: users.uid,
             username: users.username,
             email: users.email,
