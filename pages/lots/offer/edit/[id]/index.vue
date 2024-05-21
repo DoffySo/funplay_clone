@@ -6,6 +6,7 @@ import {ref, computed} from 'vue'
                 chip: null,
                 lot: null,
                 offers: null,
+                offer: null,
                 localUser: null,
 
                 formError: true,
@@ -13,7 +14,7 @@ import {ref, computed} from 'vue'
                 shortdescerr: "",
                 // form
                 offerid: 0,
-                chipid: this.$route.params.id,
+                chipid: 0,
                 owner: null,
                 platform: null,
                 launcher: null,
@@ -27,18 +28,36 @@ import {ref, computed} from 'vue'
             }
         },
         async mounted() {
-            this.chip = await $fetch("/api/lots/chips/id/"+this.$route.params.id)
-            this.lot = await $fetch("/api/lots/chips/id/list/"+this.$route.params.id)
-            this.offers = await $fetch("/api/lots/offers/chipid/"+this.$route.params.id)
+            // this.lot = await $fetch("/api/lots/chips/id/list/"+this.$route.params.id)
+            // this.offers = await $fetch("/api/lots/offers/chipid/"+this.$route.params.id)
+            this.offer = await $fetch("/api/lots/offers/id/"+this.$route.params.id)
+
+            this.offer = this.offer[0]
+            this.chip = await $fetch("/api/lots/chips/id/"+this.offer.chipid)
+            this.lot = await $fetch("/api/lots/chips/id/list/"+this.offer.chipid)
+            console.log(this.chip);
+
+
+            this.offerid = this.offer.offerid
+            this.chipid = this.offer.chipid
+            this.owner = this.offer.owner
+            this.platform = this.offer.server
+            this.launcher = this.offer.launcher
+            this.price = this.offer.price
+            this.amount = this.offer.amount
+            this.automatic = this.offer.automatic
+            this.autoactive = this.offer.showinlist
+
+            this.shortdesc = this.offer.shortDescription
+            this.longdesc = this.offer.longDescription
 
             this.localUser = useUserStore().user
 
             this.owner = useUserStore().user.uid
         },
         methods: {
-            async createOffer() {
+            async updateOffer() {
                 const body = {
-                    owner: useUserStore().user.uid,
                     offerid: this.offerid,
                     chipid: this.chipid,
                     owner: this.owner,
@@ -52,12 +71,10 @@ import {ref, computed} from 'vue'
                     longDescription: this.longdesc,
                 }
 
-                const result = await $fetch("/api/lots/offers/new/"+this.offerid, {
+                const result = await $fetch("/api/lots/offers/update/"+this.offerid, {
                     method: "post",
                     body: body
                 })
-
-                console.log(result);
                 
                 if (result.code === 200) await navigateTo(`/lots/${this.chipid}/trade`, {external: true})
             }
@@ -89,7 +106,7 @@ import {ref, computed} from 'vue'
         <div class="container d-lg-flex">
             <div class="col-md-2 col-sm-2 mt-4">
                     <div class="back-link" v-if=" this.lot && this.lot.image != null">
-                        <NuxtLink :to="'/lots/'+this.$route.params.id+'/trade'" class="d-flex align-items-center gap-2 link-light">
+                        <NuxtLink :to="'/lots/'+this.chipid+'/trade'" class="d-flex align-items-center gap-2 link-light">
                             <svg class="link-light" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
                                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 6l-6 6l6 6" />
                             </svg>
@@ -112,30 +129,18 @@ import {ref, computed} from 'vue'
             <div class="col-md-10 col-sm-9 mt-4">
                 <div class="page-content">
                     <h1 class="page-header">
-                        New offer
+                        Edit an offer
                     </h1>
-                    <BForm v-if="this.chip && this.lot && this.offers" @submit="createOffer()">
-                        <input type="hidden" name="offerid" value="0">
-                        <input type="hidden" name="chipid" v-model="chipid">
+                    <BForm v-if="this.chip && this.lot" @submit="updateOffer">
+                        <input type="hidden" name="offerid" :value="this.offerid">
+                        <input type="hidden" name="chipid" :value="chipid">
                         <input type="hidden" name="owner" v-if="localUser" :value="localUser.uid">
-
-                        <!-- {{ chip }} -->
-
-                        <!-- offerid: {{ offerid }}
-                        chipid: {{ chipid }}
-                        owner: {{ owner }}
-                        region: {{ region }}
-                        price: {{ price}}
-                        platform: {{ platform }}
-                        launcer: {{ launcher }}
-                        shortdesc: {{ shortdesc }}
-                        longdesc: {{ longdesc }} -->
 
                         <BFormGroup class="mb-4" v-if="chip.platforms">
                             <BFormText class="text-uppercase" style="font-family: sans-serif!important; font-weight: 300!important; font-size: 10px; letter-spacing: 1px;">
                                 Platform / Server
                             </BFormText>
-                            <BFormSelect v-model="platform" :options="chip.platforms" />
+                            <BFormSelect v-model="platform" :options="this.chip.platforms" />
                         </BFormGroup>
                         <BFormGroup class="mb-4" v-if="chip.launcher" label="Launcher">
                             <BFormText class="text-uppercase" style="font-family: sans-serif!important; font-weight: 300!important; font-size: 10px; letter-spacing: 1px;">

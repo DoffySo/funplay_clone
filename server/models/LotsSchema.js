@@ -74,6 +74,7 @@ const Offer = new Schema({
     shortDescription: {type: String},
     longDescription: {type: String},
     server: {type: String},
+    launcher: {type: String},
     price: {type: Number},
     amount: {type: Number}
 })

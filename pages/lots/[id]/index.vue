@@ -31,7 +31,7 @@ export default {
             })
         },
         getFilteredSortedOffers() {
-                let filteredOffers = this.offers;
+                let filteredOffers = this.offers.slice().reverse();
 
                 if (this.platform !== null) {
                     filteredOffers = filteredOffers.filter(offer => offer.server === this.platform);
@@ -215,9 +215,12 @@ export default {
                                     <template v-if="this.offers.length > 0">
                                         <tbody>
                                             <tr class="offer" @click="gotoffer(offer.offerid)" v-for="offer in getFilteredSortedOffers()" :key="offer.price">
-                                                <td class="d-none d-sm-table-cell" scope="row" rowspan="1">
-                                                {{ offer.server }}
-                                                </td>
+                                                <BTd class="d-none d-sm-table-cell" style="font-family: sans-serif!important; font-weight: 300!important;" v-if="offer.server">
+                                                    {{ offer.server }}
+                                                </BTd>
+                                                <BTd style="font-family: sans-serif!important; font-weight: 300!important;" class="d-none d-sm-table-cell" v-else>
+                                                    —
+                                                </BTd>
                                                 <td class="fw-normal d-flex flex-column">
                                                     <div class="text-secondary fs-6 d-flex d-sm-none fw-bold">{{ offer.server }}</div>
                                                     <div class="fs-6 fs-md-2">{{ offer.shortDescription }}</div>
