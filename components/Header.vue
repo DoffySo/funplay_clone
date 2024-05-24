@@ -125,7 +125,7 @@ export default {
                             <NuxtLink>
                                 Funds
                             </NuxtLink>
-                            <BBadge class="fw-normal">0$</BBadge>
+                            <BBadge class="fw-normal">{{ useUserStore().user.balance }}$</BBadge>
                         </BNavText>
                         <BNavText class="ms-auto d-flex">
                             <BDropdown no-caret size="sm" end offset="25" auto-close="outside" v-model="showProfile" variant="link"  toggle-class="text-decoration-none d-flex align-items-center" v-if="localUser">
@@ -155,6 +155,13 @@ export default {
 
                                 <BDropdownItem href="/account/settings" class="link-secondary">
                                     <NuxtLink to="/account/settings">Settings</NuxtLink>
+                                </BDropdownItem>
+
+                                <BDropdownItem class="d-flex d-lg-none">
+                                    <NuxtLink>
+                                        Funds
+                                    </NuxtLink>
+                                    <BBadge class="fw-normal">{{ useUserStore().user.balance }}$</BBadge>
                                 </BDropdownItem>
 
                                 <BDropdownItem @click="logout" class="link-secondary">

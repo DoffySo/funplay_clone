@@ -91,7 +91,7 @@ export default {
         
 
         <div class="container position-relative">
-            <div class="cd-forward w-100" v-if="this.lot && this.chip">
+            <div class="w-100" :class="this.lot.image ? 'cd-forward' : ''" v-if="this.lot && this.chip">
                 <div class="counter-list d-none d-sm-flex gap-2 mb-4 flex-wrap">
                     <NuxtLink style="width: 110px!important; height: 110px;" class="bg-light border border-body rounded-circle position-relative" :to="'/lots/'+chip.chipsid" v-for="chip in this.lot.chips" :key="chip._id">
                         <div class="position-absolute top-50 start-50 translate-middle">

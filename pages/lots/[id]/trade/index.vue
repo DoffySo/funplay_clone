@@ -15,7 +15,9 @@
 
             this.localUser = useUserStore().user;
 
-            // console.log(this.lot);
+            console.log(this.lot);
+            console.log(this.chip);
+            console.log(this.offers);
         },
         methods: {
             async editoffer(id) {
@@ -33,6 +35,7 @@
             <img :src="'/images/lots/'+this.lot.image" v-if="this.lot" alt="">
         </div>
     </div>
+
     <div class="content" v-if="this.lot && this.chip && this.offers && localUser">
         <!-- {{ offers.filter(x => x.owner == localUser.uid) }} -->
         <div class="container">
@@ -102,6 +105,19 @@
                                 </BTr>
                             </BTbody>
                         </BTableSimple>
+                    </div>
+                </div>
+                <div class="col-lg-10 col-md-9 mt-4" v-else>
+                    <div class="page-content">
+                        <div class="d-flex flex-column mb-3">
+                            <div class="col-lg-6 col-md-5 d-md-flex align-items-center mb-3">
+                                    <h1 class="d-flex ms-0 fs-2 my-auto fw-bold">Your offers</h1>
+                            </div>
+                            <span class="mb-3 fw-normal" style="font-family: sans-serif!important;">Once you add any offers, they will be displayed here.</span>
+                            <div class="col-lg-6 col-md-5 d-flex align-items-center mb-3">
+                                <NuxtLink :to="'/lots/offer/new/'+this.$route.params.id" class="btn btn-primary d-flex justify-content-center">Add an offer</NuxtLink>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

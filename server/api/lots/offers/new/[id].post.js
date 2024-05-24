@@ -13,7 +13,6 @@ import { OfferSchema, LotsSchema } from "~/server/models/LotsSchema";
 export default defineEventHandler(async (event) => {
     try {
         const body = await readBody(event)
-        console.log(body);
         const offer = new OfferSchema({
             // offerid: null,
             chipid: body.chipid,

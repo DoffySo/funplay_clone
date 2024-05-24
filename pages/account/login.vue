@@ -6,7 +6,12 @@ export default {
     data() {
         return {
             login: "",
-            password: ""
+            password: "",
+
+            alert_type: null,
+            show_alert: false,
+            alert_title: "",
+            alert_message: "",
         }
     },
     methods: {
@@ -23,19 +28,26 @@ export default {
                     }
                 })
 
+                this.alert_type = result.type
+                this.show_alert = true
+                this.alert_title = result.alert_header
+                this.alert_message = result.message
+
                 if (result.code == 200) {
                     Cookies.set("token", result.token, {
                         expires: 1,
                     })
 
-                    await navigateTo("/", {external: true})
+                    setTimeout( async () => {
+                        await navigateTo("/", {external: true})
+                    }, 1000)
                 }
 
                 // console.log(result);
         }
     },
-    async mounted() {
-        if (useUserStore().logged)
+    async created() {
+        if (useUserStore().logged || useUserStore().user.length > 0 || Cookies.get("token"))
             await navigateTo("/")
     }
 }
@@ -45,7 +57,16 @@ export default {
 <template>
     <div class="content">
         <div class="page-content modal-auth modal-sm center-block container mt-5">
-            <BForm class="col-md-4 d-flex flex-column mx-auto" @submit.prevent="handleLogin">
+            <BForm class="col-md-4 col-sm-7 d-flex flex-column mx-auto" @submit.prevent="handleLogin">
+                <BAlert :model-value="show_alert" :variant="alert_type || 'warning'">
+                    <h1 class="alert-heading fs-4">
+                        {{ alert_title }}
+                    </h1>
+                    <hr>
+                    <span class="fs-6">
+                        {{ alert_message }}
+                    </span>
+                </BAlert>
                 <BNav class="w-100 d-flex justify-content-between border-bottom">
                     <BNavText class="border-bottom border-dark" >
                         <div class="fw-semibold fs-4 active">

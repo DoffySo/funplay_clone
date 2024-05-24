@@ -21,7 +21,9 @@ async function register(body) {
         if (candidate) {
             return {
                 code: 400,
-                message: "User with this username already registered!"
+                message: "Account with this username already exists!", 
+                type: "danger",
+                alert_header: "Registration error"
             }
         }
 
@@ -38,6 +40,8 @@ async function register(body) {
         return {
             code: 200,
             message: "Successful registered",
+            type: "success",
+            alert_header: "Success"
         }
 
     } catch(e) {
@@ -52,19 +56,31 @@ async function login(body) {
         const {username, password} = body;
         const user = await UserSchema.findOne({username});
         if (!user) {
-            return { code: 400, message: "User not found" };
+            return { code: 400, 
+                message: "An account with this username does not exist!", 
+                type: "danger",
+                alert_header: "Authorization error"
+            };
         }
         const validPassword = bcrypt.compareSync(password, user.password);
         if (!validPassword) {
             return {
                 code: 400,
-                message: "Password is not correct"
+                message: "Password is not correct", 
+                type: "danger",
+                alert_header: "Authorization error"
             };
         }
         const token = generatejwt(user._id, user.uid);
         Cookies.set("token", token)
 
-        return { code: 200, message: "Successful authorized!", token: token };
+        return { 
+            code: 200, 
+            message: "Successful authorized!",
+            type: "success", 
+            token: token,
+            alert_header: "Success"
+        };
 
     } catch(e) {
         console.error(e)

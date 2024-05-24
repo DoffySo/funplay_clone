@@ -22,12 +22,13 @@ export default {
             this.user = this.user[0]
 
             this.userchat = await $fetch(`/api/chats/find?uid=${this.localUser.uid}&ruid=${this.user.uid}`)
-            this.userchat = this.userchat[0]
             console.log(this.userchat);
+            console.log(this.localUser.uid);
+            console.log(this.user.uid);
 
 
-            console.log(this.user);
-            console.log(this.localUser);
+            // console.log(this.user);
+            // console.log(this.localUser);
     },
     methods: {
         formatDate(timestamp) {
@@ -55,8 +56,6 @@ export default {
 
     <div class="content">
         <div class="container" v-if="this.user">
-
-            {{ this.user }}
             
             <div class="profile-cover">
                 <br>
@@ -70,15 +69,16 @@ export default {
                 </div>
             </div>
             <div class="profile">
-                <div class="avatar rounded-circle position-relative" style="height: 170px; width: 170px;">
-                    <div v-if="this.user._id == this.localUser._id" class="edit-circle btn btn-primary rounded-circle d-flex align-items-center justify-content-center position-absolute translate-middle" style="height: 40px; width: 40px; left: 80%; top: 10%;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 36 36">
-                            <path fill="white" d="m4.22 23.2l-1.9 8.2a2.06 2.06 0 0 0 2 2.5a2.14 2.14 0 0 0 .43 0L13 32l15.84-15.78L20 7.4Z" class="clr-i-solid clr-i-solid-path-1" />
-                            <path fill="white" d="m33.82 8.32l-5.9-5.9a2.07 2.07 0 0 0-2.92 0L21.72 5.7l8.83 8.83l3.28-3.28a2.07 2.07 0 0 0-.01-2.93" class="clr-i-solid clr-i-solid-path-2" />
-                            <path fill="none" d="M0 0h36v36H0z" />
-                        </svg>
+                <div class="avatar rounded-circle">
+                    <div class="avatar-photo rounded-circle position-relative" style="background-size: contain;" :style="'background-image: url(/avatars/'+ this.user.avatarName +')'">
+                        <div v-if="this.user && this.localUser && (this.user._id == this.localUser._id)" class="edit-circle btn btn-primary rounded-circle d-none d-md-flex align-items-center justify-content-center position-absolute translate-middle" style="height: 100%; left: 80%; top: 10%;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 36 36">
+                                <path fill="white" d="m4.22 23.2l-1.9 8.2a2.06 2.06 0 0 0 2 2.5a2.14 2.14 0 0 0 .43 0L13 32l15.84-15.78L20 7.4Z" class="clr-i-solid clr-i-solid-path-1" />
+                                <path fill="white" d="m33.82 8.32l-5.9-5.9a2.07 2.07 0 0 0-2.92 0L21.72 5.7l8.83 8.83l3.28-3.28a2.07 2.07 0 0 0-.01-2.93" class="clr-i-solid clr-i-solid-path-2" />
+                                <path fill="none" d="M0 0h36v36H0z" />
+                            </svg>
+                        </div>
                     </div>
-                    <div class="avatar-photo rounded-circle" style="width: 100%; height: 100%; background-size: contain;" :style="'background-image: url(/avatars/'+ this.user.avatarName +')'"></div>
                 </div>
                 <div class="mt-4 d-flex align-items-center gap-3">
                     <span class="fs-2">
@@ -110,9 +110,9 @@ export default {
 
             <div class="bg-light">
                 <div class="d-flex justify-content-between align-items-start">
-                    <div class="col-md-7"></div>
-                    <div class="col-md-4 container-fluid container">
-                        <Chat v-if="this.userchat && this.user" :user="this.user" :chat="userchat" :key="this.user._id"></Chat>
+                    <div class="col-md-6"></div>
+                    <div class="col-lg-5 col-md-7 container">
+                        <Chat v-if="this.userchat && this.userchat.messages && this.userchat.messages.length > 0 && this.localUser && this.user && (this.user.uid != this.localUser.uid)" :user="this.user" :chat="userchat" :key="this.user._id"></Chat>
                     </div>
                 </div>
             </div>
@@ -190,8 +190,17 @@ export default {
     padding-right: 30px;
 }
 
+.avatar, .avatar .avatar-photo {
+    width: 170px!important;
+    height: 170px!important;
+}
+.edit-circle {
+    height: 40px!important;
+    width: 40px!important;
+}
+
 @media (max-width: 767px) {
-    .avatar .avatar-photo {
+    .avatar, .avatar .avatar-photo {
         width: 70px!important;
         height: 70px!important;
     }

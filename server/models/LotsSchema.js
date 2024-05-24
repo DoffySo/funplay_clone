@@ -67,6 +67,7 @@ const Offer = new Schema({
     chipid: {type: Number}, // по номеру chips (для возврата)
     owner: {type: Number}, // по uid
     bought: {type: Boolean, default: false},
+    buyerid: {type: Number},
     confirmed: {type: Boolean, default: false},
     showinlist: {type: Boolean, default: true},
     automatic: {type: Boolean, default: false},
@@ -76,7 +77,7 @@ const Offer = new Schema({
     server: {type: String},
     launcher: {type: String},
     price: {type: Number},
-    amount: {type: Number}
+    amount: {type: Number},
 })
 Offer.plugin(autoIncrement, {inc_field: 'offerid'})
 

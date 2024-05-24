@@ -9,6 +9,11 @@ export default {
             email: "",
             password: "",
             checkbox: false,
+
+            alert_type: undefined,
+            show_alert: false,
+            alert_title: "",
+            alert_message: "",
         }
     },
     methods: {
@@ -26,6 +31,11 @@ export default {
                         password: this.password
                     }
                 })
+
+                this.alert_type = result.type
+                this.show_alert = true
+                this.alert_title = result.alert_header
+                this.alert_message = result.message
             }
         }
     },
@@ -38,9 +48,19 @@ export default {
 
 
 <template>
+    
     <div class="content">
         <div class="page-content modal-auth modal-sm center-block container mt-5">
             <BForm class="col-md-4 d-flex flex-column mx-auto" @submit.prevent="handleRegister">
+                <BAlert :model-value="show_alert" :variant="alert_type || 'warning'">
+                    <h1 class="alert-heading fs-4">
+                        {{ alert_title || "Undefined error" }}
+                    </h1>
+                    <hr>
+                    <span class="fs-6">
+                        {{ alert_message || "Undefined error" }}
+                    </span>
+                </BAlert>
                 <BNav class="w-100 d-flex justify-content-between border-bottom">
                     <BNavText class="" >
                         <NuxtLink class="fw-semibold fs-4 link-primary" to="/account/login">
