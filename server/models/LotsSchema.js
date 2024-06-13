@@ -24,39 +24,6 @@ const Lot = new Schema({
 
 export const LotsSchema = mongoose.model("Lots", Lot);
 
-// async function newlot() {
-    
-//     const testlot = new LotsSchema({
-        // lotname: "AFK Arena",
-        // chips: [
-        //     {
-        //         chipsid: 0,
-        //         name: "Accounts"
-        //     },
-        //     {
-        //         chipsid: 1,
-        //         name: "Diamonds"
-        //     },
-        //     {
-        //         chipsid: 2,
-        //         name: "Top Up"
-        //     },
-        //     {
-        //         chipsid: 3,
-        //         name: "Services"
-        //     },
-        //     {
-        //         chipsid: 4,
-        //         name: "Other"
-        //     },
-        // ],
-        // image: "afkarena.png"
-//     });
-//     await testlot.save()
-// }
-
-// newlot()
-
 const offeritemsSchema = new Schema({
     sended: {type: Boolean, default: false},
     message: {type: String},

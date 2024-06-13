@@ -17,11 +17,18 @@ export default defineNuxtConfig({
     plugins: [
         "@/server/database/connection.js",
     ],
+    storage: {
+      fs: {
+        driver: 'fs',
+        base: './public/avatars/uploads'
+      }
+    }
   },
   devtools: { enabled: true },
   modules: [
     '@pinia/nuxt',
-    '@bootstrap-vue-next/nuxt'
+    '@bootstrap-vue-next/nuxt',
+    '@vueuse/nuxt',
   ],
   watch: [
     '@/stores/**',
